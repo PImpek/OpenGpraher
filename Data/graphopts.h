@@ -29,7 +29,8 @@
 
 typedef std::tuple< double, double > Point;
 //tuple contains axis description : min, max, label,logarithmic, side(0-left/down, 1-right/up)
-typedef std::vector< std::tuple< double, double, std::string, bool, bool > > Axes;
+typedef std::tuple< double, double, std::string, bool, bool > Axis;
+typedef std::vector< Axis *> Axes;
 class GraphOpts
 {
 public:

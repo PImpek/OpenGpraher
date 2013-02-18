@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->initModules();
+    this->initActions();
     this->connectUiElements();
 
     this->updateWindowTitle();
@@ -191,12 +192,12 @@ void MainWindow::initModules()
     auto cm = new CurvesManager(this);
     this->addDockWidget(Qt::RightDockWidgetArea,cm);
 
-
     auto cp = new CurveProperties(this);
     this->addDockWidget(Qt::RightDockWidgetArea,cp);
 
+    auto go = new GraphOptions(this);
+    this->addDockWidget(Qt::LeftDockWidgetArea,go);
 
-    this->initActions();
 }
 
 void MainWindow::initActions()
@@ -240,14 +241,20 @@ void MainWindow::initActions()
     //edit
     //tools
     //window
-    auto cm = dynamic_cast<CurvesManager *>(ServicesProvider::getInstance()->getServiceAsQ<ICurvesManager>());
+    auto cm = dynamic_cast<QDockWidget *>(ServicesProvider::getInstance()->getServiceAsQ<ICurvesManager>());
     this->ui->menu_Window->addAction(cm->toggleViewAction());
+    this->getActions()->insert(ActionDictEntry("CurvesManager", cm->toggleViewAction()));
 
-    auto cp = dynamic_cast<CurveProperties *>(ServicesProvider::getInstance()->getServiceAsQ<ICurveProperties>());
+    auto cp = dynamic_cast<QDockWidget *>(ServicesProvider::getInstance()->getServiceAsQ<ICurveProperties>());
     this->ui->menu_Window->addAction(cp->toggleViewAction());
 
-    this->getActions()->insert(ActionDictEntry("CurvesManager", cm->toggleViewAction()));
     this->getActions()->insert(ActionDictEntry("CurveProperties", cp->toggleViewAction()));
+
+    auto go = dynamic_cast<QDockWidget *>(ServicesProvider::getInstance()->getServiceAsQ<IGraphOptions>());
+    this->ui->menu_Window->addAction(go->toggleViewAction());
+    this->getActions()->insert(ActionDictEntry("GraphOptions", go->toggleViewAction()));
+
+
     //about
 }
 
@@ -257,12 +264,15 @@ void MainWindow::connectUiElements()
     auto cm = ServicesProvider::getInstance()->getServiceAsQ<ICurvesManager>();
 
     auto cp = ServicesProvider::getInstance()->getServiceAsQ<ICurveProperties>();
+    auto go = ServicesProvider::getInstance()->getServiceAsQ<IGraphOptions>();
     // after reloading or editing project, refresh view
     this->connect(pm,SIGNAL(projectChanged()),cm,SLOT(refresh()));
     this->connect(pm,SIGNAL(projectContentChanged()),cm,SLOT(refresh()));
+    this->connect(pm,SIGNAL(projectContentChanged()),go,SLOT(refresh()));
     // after changing selected curve on curvesamanager, rebind new curve;
     this->connect(cm,SIGNAL(selectionChanged(int)),cp,SLOT(currentCurveIndexChanged(int)));
     // after reloading or editing project, update title in main window
     this->connect(pm,SIGNAL(projectChanged()),this,SLOT(updateWindowTitle()));
     this->connect(pm,SIGNAL(projectContentChanged()),this,SLOT(updateWindowTitle()));
+
 }

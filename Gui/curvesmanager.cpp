@@ -30,9 +30,7 @@ CurvesManager::CurvesManager(QWidget *parent) :
     ui(new Ui::CurvesManager)
 {
     ui->setupUi(this);
-
     this->connect(this->ui->curvesList,SIGNAL(currentRowChanged(int)),this,SLOT(listSelectionChanged(int)));
-
     this->refreshCurves();
 
     ServicesProvider::getInstance()->registerService<ICurvesManager>(this);

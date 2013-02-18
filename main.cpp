@@ -73,13 +73,13 @@ void projectmanagertest(){
     }
     pm->getProject()->getCurves()->push_back(c);
 
-    pm->getProject()->getGraphOpts()->getXAxes()->push_back(std::make_tuple(0.0,1.0,std::string("x"),false,false));
-    pm->getProject()->getGraphOpts()->getXAxes()->push_back(std::make_tuple(0.0,1.0,std::string("y"),false,false));
-    pm->getProject()->getGraphOpts()->getXAxes()->push_back(std::make_tuple(0.0,1.0,std::string("z"),false,false));
+    pm->getProject()->getGraphOpts()->getXAxes()->push_back(new Axis(0.0,1.0,std::string("x"),false,false));
+    pm->getProject()->getGraphOpts()->getXAxes()->push_back(new Axis(0.0,1.0,std::string("y"),false,false));
+    pm->getProject()->getGraphOpts()->getXAxes()->push_back(new Axis(0.0,1.0,std::string("z"),false,false));
 
-    pm->getProject()->getGraphOpts()->getYAxes()->push_back(std::make_tuple(0.0,2.0,std::string("xx"),false,false));
-    pm->getProject()->getGraphOpts()->getYAxes()->push_back(std::make_tuple(0.0,2.0,std::string("yy"),false,false));
-    pm->getProject()->getGraphOpts()->getYAxes()->push_back(std::make_tuple(0.0,2.0,std::string("zz"),false,false));
+    pm->getProject()->getGraphOpts()->getYAxes()->push_back(new Axis(0.0,2.0,std::string("xx"),false,false));
+    pm->getProject()->getGraphOpts()->getYAxes()->push_back(new Axis(0.0,2.0,std::string("yy"),false,false));
+    pm->getProject()->getGraphOpts()->getYAxes()->push_back(new Axis(0.0,2.0,std::string("zz"),false,false));
     //pm->saveProject(std::string("/home/pimpek/test.ogx"));
 
     //pm->loadProject(std::string("/home/pimpek/test.ogx"));

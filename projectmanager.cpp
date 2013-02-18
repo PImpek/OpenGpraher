@@ -95,13 +95,13 @@ void ProjectManager::writeGraphOpts(GraphOpts *go, QXmlStreamWriter *xw)
     xw->writeAttribute("legend_y",QString::number(std::get<1>(go->getLegendPosition())));
 
     xw->writeStartElement("xaxes");
-    std::for_each(go->getXAxes()->begin(),go->getXAxes()->end(),[xw,this] (std::tuple<double, double, std::string, bool, bool> axis){
+    std::for_each(go->getXAxes()->begin(),go->getXAxes()->end(),[xw,this] (Axis *axis){
         this->writeAxis(axis,xw);
     });
     xw->writeEndElement();
 
     xw->writeStartElement("yaxes");
-    std::for_each(go->getYAxes()->begin(),go->getYAxes()->end(),[xw,this] (std::tuple<double, double, std::string, bool, bool> axis){
+    std::for_each(go->getYAxes()->begin(),go->getYAxes()->end(),[xw,this] (Axis *axis){
         this->writeAxis(axis,xw);
     });
     xw->writeEndElement();
@@ -109,17 +109,17 @@ void ProjectManager::writeGraphOpts(GraphOpts *go, QXmlStreamWriter *xw)
     xw->writeEndElement();
 }
 
-void ProjectManager::writeAxis(std::tuple<double, double, std::string, bool, bool> axis, QXmlStreamWriter *xw)
+void ProjectManager::writeAxis(Axis *axis, QXmlStreamWriter *xw)
 {
     xw->writeStartElement("axis");
 
-    xw->writeAttribute("min",QString::number(std::get<0>(axis)));
-    xw->writeAttribute("max",QString::number(std::get<1>(axis)));
+    xw->writeAttribute("min",QString::number(std::get<0>((*axis))));
+    xw->writeAttribute("max",QString::number(std::get<1>((*axis))));
 
-    xw->writeAttribute("label",std::get<2>(axis).c_str());
+    xw->writeAttribute("label",std::get<2>((*axis)).c_str());
 
-    xw->writeAttribute("logarithmic",(std::get<3>(axis))?"1":"0");
-    xw->writeAttribute("side",(std::get<3>(axis))?"1":"0");
+    xw->writeAttribute("logarithmic",(std::get<3>((*axis)))?"1":"0");
+    xw->writeAttribute("side",(std::get<3>((*axis)))?"1":"0");
 
     xw->writeEndElement();
 }
@@ -280,9 +280,9 @@ bool ProjectManager::readAxis(QXmlStreamReader *xr, Axes *ax)
                         attrs.hasAttribute("logarithmic") &&
                         attrs.hasAttribute("side")){
 
-                    ax->push_back(std::make_tuple(attrs.value("min").toUtf8().toDouble(),
+                    ax->push_back(new Axis(attrs.value("min").toUtf8().toDouble(),
                                                   attrs.value("max").toUtf8().toDouble(),
-                                                  attrs.value("label").toUtf8().constData(),
+                                                  std::string(attrs.value("label").toUtf8().constData()),
                                                   (attrs.value("logarithmic").toString() == "1") ? true : false,
                                                   (attrs.value("side").toString() == "1") ? true : false));
                 }

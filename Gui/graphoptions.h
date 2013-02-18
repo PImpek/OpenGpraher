@@ -20,59 +20,45 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GRAPHOPTIONS_H
+#define GRAPHOPTIONS_H
 
-#include <iostream>
-#include <QMainWindow>
-#include <QFileDialog>
+#include <QDockWidget>
 
-#include "Interfaces/imainwindow.h"
-#include "Interfaces/icurvesmanager.h"
-#include "Interfaces/icurveproperties.h"
-
-#include "Gui/curvesmanager.h"
-#include "Gui/curveproperties.h"
-#include "Gui/graphoptions.h"
+#include "servicesprovider.h"
+#include "Interfaces/igraphoptions.h"
+#include "Interfaces/iprojectmanager.h"
 
 namespace Ui {
-class MainWindow;
+class GraphOptions;
 }
 
-class MainWindow : public QMainWindow, public IMainWindow
+class GraphOptions : public QDockWidget, public IGraphOptions
 {
+    Q_INTERFACES(IGraphOptions)
     Q_OBJECT
-    Q_INTERFACES(IMainWindow)
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
-
+    explicit GraphOptions(QWidget *parent = 0);
+    ~GraphOptions();
+    
     std::string getName();
-    void _show();
-
-    void updateStatusBar(std::string msg, int timeout = 0);
-    ActionsDict *getActions();
-
-    ~MainWindow();
+    void refreshContent();
 
 public slots:
-    void updateWindowTitle();
-    void saveProject();
-    void saveProjectAs();
+    void refresh();
 
-    void newProject();
-    void openProject();
+private slots:
+    void titleChanged();
+    void titleSizeChanged(int s);
 
-    void closeApp();
+    void showLegendChanged(bool s);
+    void legendSizeChanged(int s);
+
+    void curvesSizeChanged(int s);
 
 private:
-    Ui::MainWindow *ui;
-    ActionsDict *adict;
-
-    void initModules();
-    void initActions();
-
-    void connectUiElements();
+    Ui::GraphOptions *ui;
 };
 
-#endif // MAINWINDOW_H
+#endif // GRAPHOPTIONS_H

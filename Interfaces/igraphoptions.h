@@ -20,59 +20,29 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef IGRAPHOPTIONS_H
+#define IGRAPHOPTIONS_H
 
-#include <iostream>
-#include <QMainWindow>
-#include <QFileDialog>
+#include <QtPlugin>
+#include "Interfaces/iservice.h"
 
-#include "Interfaces/imainwindow.h"
-#include "Interfaces/icurvesmanager.h"
-#include "Interfaces/icurveproperties.h"
-
-#include "Gui/curvesmanager.h"
-#include "Gui/curveproperties.h"
-#include "Gui/graphoptions.h"
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow, public IMainWindow
+/*!
+ * \brief The IGraphOptions class
+ * inteface for grapher options dock
+ */
+class IGraphOptions : public IService
 {
-    Q_OBJECT
-    Q_INTERFACES(IMainWindow)
-    
 public:
-    explicit MainWindow(QWidget *parent = 0);
-
-    std::string getName();
-    void _show();
-
-    void updateStatusBar(std::string msg, int timeout = 0);
-    ActionsDict *getActions();
-
-    ~MainWindow();
+    void refreshContent();
+signals:
 
 public slots:
-    void updateWindowTitle();
-    void saveProject();
-    void saveProjectAs();
-
-    void newProject();
-    void openProject();
-
-    void closeApp();
-
-private:
-    Ui::MainWindow *ui;
-    ActionsDict *adict;
-
-    void initModules();
-    void initActions();
-
-    void connectUiElements();
+    /*!
+     * \brief refresh
+     *refreshes values in dock. ie. after changing project
+     */
+    void refresh();
 };
+Q_DECLARE_INTERFACE(IGraphOptions,"og.IGraphOptions/1.0")
 
-#endif // MAINWINDOW_H
+#endif // IGRAPHOPTIONS_H

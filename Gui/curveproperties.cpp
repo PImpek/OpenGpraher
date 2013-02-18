@@ -154,8 +154,8 @@ void CurveProperties::reloadAxis(QComboBox *cb, Axes *a)
     cb->clear();
     cb->insertItem(0,"");
 
-    std::for_each(a->begin(),a->end(),[cb] (std::tuple<double,double,std::string,bool,bool> ax){
-        cb->insertItem(cb->count(),std::get<2>(ax).c_str());
+    std::for_each(a->begin(),a->end(),[cb] (Axis *ax){
+        cb->insertItem(cb->count(),std::get<2>((*ax)).c_str());
     });
 }
 

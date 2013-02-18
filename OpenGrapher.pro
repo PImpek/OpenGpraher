@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     projectmanager.cpp \
     Gui/curvesmanager.cpp \
     Gui/curveproperties.cpp \
-    Gui/graphercanvas.cpp
+    Gui/graphercanvas.cpp \
+    Gui/graphoptions.cpp \
+    Gui/axesoptions.cpp
 
 HEADERS  += Gui/mainwindow.h \
     Interfaces/imainwindow.h \
@@ -39,8 +41,13 @@ HEADERS  += Gui/mainwindow.h \
     Gui/curveproperties.h \
     Interfaces/icurveproperties.h \
     Interfaces/igraphercanvas.h \
-    Gui/graphercanvas.h
+    Gui/graphercanvas.h \
+    Interfaces/igraphoptions.h \
+    Gui/graphoptions.h \
+    Gui/axesoptions.h
 
 FORMS    += Ui/mainwindow.ui \
     Ui/curvesmanager.ui \
-    Ui/curveproperties.ui
+    Ui/curveproperties.ui \
+    Ui/graphoptions.ui \
+    Ui/axesoptions.ui

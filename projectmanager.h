@@ -77,7 +77,7 @@ private:
 
     void writeCurve(Curve *c, QXmlStreamWriter *xw);
     void writeGraphOpts(GraphOpts *go, QXmlStreamWriter *xw);
-    void writeAxis(std::tuple<double, double, std::string, bool, bool> axis, QXmlStreamWriter *xw);
+    void writeAxis(Axis *axis, QXmlStreamWriter *xw);
 
     bool readCurve(QXmlStreamReader *xr, Project *pro);
     bool readGraphOpts(QXmlStreamReader *xr, Project *pro);
