@@ -91,16 +91,16 @@ void CurveProperties::styleChanged(int id)
 
 void CurveProperties::xAxisIdChanged(int id)
 {
-    if (this->c == nullptr || this->c->getXAxisId() == id + 1) return;
-    this->c->setXAxisId(id+1);
+    if (this->c == nullptr || this->c->getXAxisId() == id - 1) return;
+    this->c->setXAxisId(id-1);
 
     ServicesProvider::getInstance()->getService<IProjectManager>()->projectSetUnSaved();
 }
 
 void CurveProperties::yAxisIdChanged(int id)
 {
-    if (this->c == nullptr || this->c->getYAxisId() == id + 1) return;
-    this->c->setYAxisId(id+1);
+    if (this->c == nullptr || this->c->getYAxisId() == id - 1) return;
+    this->c->setYAxisId(id-1);
 
     ServicesProvider::getInstance()->getService<IProjectManager>()->projectSetUnSaved();
 }
@@ -145,8 +145,8 @@ void CurveProperties::loadCurve(Curve *c){
     this->reloadAxis(this->ui->yaxis,pm->getProject()->getGraphOpts()->getYAxes());
     this->connect(this->ui->yaxis,SIGNAL(currentIndexChanged(int)),this,SLOT(yAxisIdChanged(int)));
 
-    this->ui->xaxis->setCurrentIndex(c->getXAxisId()-1);
-    this->ui->yaxis->setCurrentIndex(c->getYAxisId()-1);
+    this->ui->xaxis->setCurrentIndex(c->getXAxisId()+1);
+    this->ui->yaxis->setCurrentIndex(c->getYAxisId()+1);
 }
 
 void CurveProperties::reloadAxis(QComboBox *cb, Axes *a)
@@ -169,6 +169,7 @@ void CurveProperties::reloadData(int curveId)
         return;
     } else if (curveId < pm->getProject()->getCurves()->size()){
         this->setEnabled(true);
+
         this->loadCurve(pm->getProject()->getCurves()->at(curveId));
     } else {
         QMessageBox::warning(dynamic_cast<QWidget*>(ServicesProvider::getInstance()->getService<IMainWindow>()),

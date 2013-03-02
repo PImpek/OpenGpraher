@@ -38,6 +38,8 @@ int main(int argc, char *argv[])
 
 
     new ProjectManager();
+    //IProjectManager* pm = ServicesProvider::getInstance()->getService<IProjectManager>();
+    //pm->loadProject(std::string("/home/pimpek/tmp/test.ogx"));
     projectmanagertest();
     new MainWindow;
 

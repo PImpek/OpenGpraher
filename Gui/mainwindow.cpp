@@ -269,6 +269,7 @@ void MainWindow::connectUiElements()
     this->connect(pm,SIGNAL(projectChanged()),cm,SLOT(refresh()));
     this->connect(pm,SIGNAL(projectContentChanged()),cm,SLOT(refresh()));
     this->connect(pm,SIGNAL(projectContentChanged()),go,SLOT(refresh()));
+    this->connect(pm,SIGNAL(projectChanged()),go,SLOT(refresh()));
     // after changing selected curve on curvesamanager, rebind new curve;
     this->connect(cm,SIGNAL(selectionChanged(int)),cp,SLOT(currentCurveIndexChanged(int)));
     // after reloading or editing project, update title in main window

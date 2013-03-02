@@ -259,7 +259,6 @@ bool ProjectManager::readGraphOpts(QXmlStreamReader *xr, Project *pro)
     }
     xr->readNext();
     this->readAxis(xr,pro->getGraphOpts()->getXAxes());
-
     xr->readNext();
     this->readAxis(xr,pro->getGraphOpts()->getYAxes());
 
@@ -268,9 +267,8 @@ bool ProjectManager::readGraphOpts(QXmlStreamReader *xr, Project *pro)
 
 bool ProjectManager::readAxis(QXmlStreamReader *xr, Axes *ax)
 {
-    if(xr->readNext() == QXmlStreamReader::StartElement && xr->name() == "yaxes") {
-        while(!(xr->readNext() == QXmlStreamReader::EndElement && xr->name() == "yaxes")) {
-
+    if(xr->readNext() == QXmlStreamReader::StartElement && xr->name().endsWith("axes")) {
+        while(!(xr->readNext() == QXmlStreamReader::EndElement && xr->name().endsWith("axes"))) {
             if(xr->tokenType() == QXmlStreamReader::StartElement && xr->name() == "axis"){
                 auto attrs = xr->attributes();
 
@@ -281,15 +279,17 @@ bool ProjectManager::readAxis(QXmlStreamReader *xr, Axes *ax)
                         attrs.hasAttribute("side")){
 
                     ax->push_back(new Axis(attrs.value("min").toUtf8().toDouble(),
-                                                  attrs.value("max").toUtf8().toDouble(),
-                                                  std::string(attrs.value("label").toUtf8().constData()),
-                                                  (attrs.value("logarithmic").toString() == "1") ? true : false,
-                                                  (attrs.value("side").toString() == "1") ? true : false));
+                                           attrs.value("max").toUtf8().toDouble(),
+                                           std::string(attrs.value("label").toUtf8().constData()),
+                                           (attrs.value("logarithmic").toString() == "1") ? true : false,
+                                           (attrs.value("side").toString() == "1") ? true : false));
                 }
+
             }
         }
         return true;
     } else {
+        qDebug()<<xr->name();
         return false;
     }
 }
@@ -409,6 +409,7 @@ void ProjectManager::saveProject(std::string fname)
     delete file;
 
     this->setProjectPath(fname);
+    this->projectSetSaved();
     emit projectChanged();
 
 }

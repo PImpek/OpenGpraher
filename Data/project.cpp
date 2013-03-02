@@ -24,7 +24,7 @@
 
 Project::Project()
 {
-    this->name = new std::string("unnamed_project");
+    this->name = new std::string("");
     this->saved = true;
 
     this->curves = new std::vector<Curve*>();

@@ -24,7 +24,16 @@
 #define AXESOPTIONS_H
 
 #include <QWidget>
+#include <QMessageBox>
+
+#include <tuple>
+#include <vector>
+
+#include "Interfaces/iprojectmanager.h"
+#include "Interfaces/imainwindow.h"
+
 #include "Data/graphopts.h"
+#include "servicesprovider.h"
 
 namespace Ui {
 class AxesOptions;
@@ -45,6 +54,19 @@ private:
     Axes *axes;
 
     void refreshList();
+
+private slots:
+    void addAxis();
+    void removeAxis();
+
+    void currentAxisChanged(int id);
+    void minChanged(double val);
+
+    void maxChanged(double val);
+    void labelChanged();
+
+    void logChanged(bool val);
+    void sideChanged(bool val);
 };
 
 #endif // AXESOPTIONS_H

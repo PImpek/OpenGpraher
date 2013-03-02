@@ -76,6 +76,8 @@ void CurvesManager::refreshCurves()
                 this->ui->curvesList->item(i)->setData(Qt::DecorationRole,QColor(curves->at(i)->getColor().c_str()));
             }
         }
+        ICurveProperties *cp = ServicesProvider::getInstance()->getService<ICurveProperties>();
+        cp->currentCurveIndexChanged(this->ui->curvesList->currentRow());
 
 
     }

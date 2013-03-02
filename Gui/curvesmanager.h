@@ -25,11 +25,11 @@
 
 #include <QDockWidget>
 
-#include "servicesprovider.h"
-
 #include "Interfaces/iprojectmanager.h"
 #include "Interfaces/icurvesmanager.h"
+#include "Interfaces/icurveproperties.h"
 
+#include "servicesprovider.h"
 #include "Data/project.h"
 #include "Data/curve.h"
 
