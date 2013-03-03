@@ -254,9 +254,6 @@ void MainWindow::initActions()
     this->getActions()->insert(ActionDictEntry("exit", exit));
     this->connect(exit,SIGNAL(triggered()),this,SLOT(close()));
 
-
-
-
     //edit
     //tools
     //window
