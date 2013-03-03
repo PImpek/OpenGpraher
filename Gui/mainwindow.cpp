@@ -69,6 +69,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent *ev)
+{
+    auto pm = ServicesProvider::getInstance()->getService<IProjectManager>();
+    QMessageBox msgBox;
+    msgBox.setText("The document has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+
+    ev->ignore();
+    switch (ret) {
+    case QMessageBox::Save:
+        if (this->saveProject()) ev->accept();
+        break;
+    case QMessageBox::Discard:
+        ev->accept();
+        break;
+    case QMessageBox::Cancel:
+        break;
+    default:
+        // should never be reached
+        break;
+    }
+}
+
 void MainWindow::updateWindowTitle()
 {
     IProjectManager *pm = ServicesProvider::getInstance()->getService<IProjectManager>();
@@ -79,21 +106,28 @@ void MainWindow::updateWindowTitle()
                                              " ["+pm->getProjectPath()+"]").c_str()));
 }
 
-void MainWindow::saveProject()
+bool MainWindow::saveProject()
 {
     if (ServicesProvider::getInstance()->getService<IProjectManager>()->getProjectPath() == "")
         return this->saveProjectAs();
+
     ServicesProvider::getInstance()->getService<IProjectManager>()->saveProject();
+    return true;
 }
 
-void MainWindow::saveProjectAs()
+bool MainWindow::saveProjectAs()
 {
     IProjectManager *pm = ServicesProvider::getInstance()->getService<IProjectManager>();
     QString fname =  QFileDialog::getSaveFileName(this,"Open Project from file",
                                                   QString(pm->getProjectPath().c_str()),
                                                   "OpenGrapherXML (*.ogx)");
 
-    if (!fname.isNull()) pm->saveProject(fname.toUtf8().constData());
+    if (!fname.isNull())
+    {
+        pm->saveProject(fname.toUtf8().constData());
+        return true;
+    }
+    return false;
 }
 
 void MainWindow::newProject()
@@ -160,32 +194,6 @@ void MainWindow::openProject()
         pm->loadProject(fname.toUtf8().constData());
 }
 
-void MainWindow::closeApp()
-{
-    auto pm = ServicesProvider::getInstance()->getService<IProjectManager>();
-    QMessageBox msgBox;
-    msgBox.setText("The document has been modified.");
-    msgBox.setInformativeText("Do you want to save your changes?");
-
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Save);
-    int ret = msgBox.exec();
-
-    switch (ret) {
-    case QMessageBox::Save:
-        this->saveProject();
-        break;
-    case QMessageBox::Discard:
-        break;
-    case QMessageBox::Cancel:
-        return;
-        break;
-    default:
-        // should never be reached
-        break;
-    }
-    this->close();
-}
 
 void MainWindow::initModules()
 {
@@ -237,6 +245,17 @@ void MainWindow::initActions()
     this->ui->menu_File->addAction(saveFileAs);
     this->getActions()->insert(ActionDictEntry("saveProjectAs", saveFileAs));
     this->connect(saveFileAs,SIGNAL(triggered()),this,SLOT(saveProjectAs()));
+
+    this->ui->menu_File->addSeparator();
+
+    auto exit = new QAction("Close",this);
+    this->ui->menu_File->addAction(exit);
+
+    this->getActions()->insert(ActionDictEntry("exit", exit));
+    this->connect(exit,SIGNAL(triggered()),this,SLOT(close()));
+
+
+
 
     //edit
     //tools

@@ -26,6 +26,7 @@
 #include <iostream>
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QCloseEvent>
 
 #include "Interfaces/imainwindow.h"
 #include "Interfaces/icurvesmanager.h"
@@ -55,15 +56,16 @@ public:
 
     ~MainWindow();
 
+protected:
+    void closeEvent(QCloseEvent *);
+
 public slots:
     void updateWindowTitle();
-    void saveProject();
-    void saveProjectAs();
+    bool saveProject();
+    bool saveProjectAs();
 
     void newProject();
     void openProject();
-
-    void closeApp();
 
 private:
     Ui::MainWindow *ui;

@@ -69,8 +69,8 @@ public slots:
      */
     virtual void updateWindowTitle() = 0;
 
-    virtual void saveProject() = 0;
-    virtual void saveProjectAs() = 0;
+    virtual bool saveProject() = 0;
+    virtual bool saveProjectAs() = 0;
 
     virtual void newProject() = 0;
     virtual void openProject() = 0;
