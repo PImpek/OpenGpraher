@@ -60,9 +60,14 @@ public slots:
 
 private slots:
     void listSelectionChanged(int id);
+    void moveCurveUp();
+    void moveCurveTop();
+    void moveCurveDown();
 
 private:
     Ui::CurvesManager *ui;
+
+
 
 };
 
