@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>249</width>
-    <height>300</height>
+    <width>285</width>
+    <height>317</height>
    </rect>
   </property>
   <property name="features">
@@ -33,14 +33,22 @@
        <item>
         <widget class="QPushButton" name="addCurve">
          <property name="text">
-          <string>+</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resources.qrc">
+           <normaloff>:/Resources/list-add.png</normaloff>:/Resources/list-add.png</iconset>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="removeCurve">
          <property name="text">
-          <string>-</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resources.qrc">
+           <normaloff>:/Resources/list-remove.png</normaloff>:/Resources/list-remove.png</iconset>
          </property>
         </widget>
        </item>
@@ -59,22 +67,37 @@
        </item>
        <item>
         <widget class="QPushButton" name="moveUp">
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
          <property name="text">
-          <string>^</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resources.qrc">
+           <normaloff>:/Resources/go-up.png</normaloff>:/Resources/go-up.png</iconset>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="moveTop">
          <property name="text">
-          <string>^^</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resources.qrc">
+           <normaloff>:/Resources/go-top.png</normaloff>:/Resources/go-top.png</iconset>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="moveDown">
          <property name="text">
-          <string>\/</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resources.qrc">
+           <normaloff>:/Resources/go-down.png</normaloff>:/Resources/go-down.png</iconset>
          </property>
         </widget>
        </item>
@@ -87,6 +110,8 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

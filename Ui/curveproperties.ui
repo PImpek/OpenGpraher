@@ -74,7 +74,11 @@
     <item row="4" column="2">
      <widget class="QPushButton" name="colorbtn">
       <property name="text">
-       <string>...</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="../resources.qrc">
+        <normaloff>:/Resources/format-stroke-color.png</normaloff>:/Resources/format-stroke-color.png</iconset>
       </property>
      </widget>
     </item>
@@ -99,6 +103,8 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

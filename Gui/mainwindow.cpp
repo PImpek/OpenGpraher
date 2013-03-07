@@ -212,7 +212,7 @@ void MainWindow::initActions()
 {
 
     //file
-    auto newFile = new QAction("New Project ...",this);
+    auto newFile = new QAction(QIcon(":/Resources/document-new.png"),"New Project ...",this);
     newFile->setShortcutContext(Qt::ApplicationShortcut);
     newFile->setShortcut(QKeySequence("Ctrl+N"));
 
@@ -220,7 +220,7 @@ void MainWindow::initActions()
     this->getActions()->insert(ActionDictEntry("newProject", newFile));
     this->connect(newFile,SIGNAL(triggered()),this,SLOT(newProject()));
 
-    auto openFile = new QAction("Open Project ...",this);
+    auto openFile = new QAction(QIcon(":/Resources/document-open.png"),"Open Project ...",this);
     openFile->setShortcutContext(Qt::ApplicationShortcut);
     openFile->setShortcut(QKeySequence("Ctrl+O"));
 
@@ -230,7 +230,7 @@ void MainWindow::initActions()
 
     this->ui->menu_File->addSeparator();
 
-    auto saveFile = new QAction("Save Project ...",this);
+    auto saveFile = new QAction(QIcon(":/Resources/document-save.png"),"Save Project ...",this);
     saveFile->setShortcutContext(Qt::ApplicationShortcut);
     saveFile->setShortcut(QKeySequence("Ctrl+S"));
 
@@ -238,7 +238,7 @@ void MainWindow::initActions()
     this->getActions()->insert(ActionDictEntry("saveProject", saveFile));
     this->connect(saveFile,SIGNAL(triggered()),this,SLOT(saveProject()));
 
-    auto saveFileAs = new QAction("Save Project as ...",this);
+    auto saveFileAs = new QAction(QIcon(":/Resources/document-save-as.png"),"Save Project as ...",this);
     saveFileAs->setShortcutContext(Qt::ApplicationShortcut);
     saveFileAs->setShortcut(QKeySequence("Ctrl+Shift+S"));
 
@@ -248,7 +248,7 @@ void MainWindow::initActions()
 
     this->ui->menu_File->addSeparator();
 
-    auto exit = new QAction("Close",this);
+    auto exit = new QAction(QIcon(":/Resources/application-exit.png"),"Close",this);
     this->ui->menu_File->addAction(exit);
 
     this->getActions()->insert(ActionDictEntry("exit", exit));

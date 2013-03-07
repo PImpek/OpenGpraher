@@ -5,6 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = OpenGrapher
 TEMPLATE = app
 
+
 QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
@@ -45,3 +46,19 @@ FORMS    += Ui/mainwindow.ui \
     Ui/curveproperties.ui \
     Ui/graphoptions.ui \
     Ui/axesoptions.ui
+
+RESOURCES += \
+    resources.qrc
+
+OTHER_FILES += \
+    Resources/list-remove.png \
+    Resources/list-add.png \
+    Resources/go-up.png \
+    Resources/go-top.png \
+    Resources/go-down.png \
+    Resources/format-stroke-color.png \
+    Resources/document-save.png \
+    Resources/document-save-as.png \
+    Resources/document-open.png \
+    Resources/document-new.png \
+    Resources/application-exit.png

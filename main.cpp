@@ -40,7 +40,9 @@ int main(int argc, char *argv[])
     new ProjectManager();
     //IProjectManager* pm = ServicesProvider::getInstance()->getService<IProjectManager>();
     //pm->loadProject(std::string("/home/pimpek/tmp/test.ogx"));
+#ifdef QT_DEBUG
     projectmanagertest();
+#endif
     new MainWindow;
 
 
@@ -50,7 +52,8 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-void projectmanagertest(){
+void projectmanagertest()
+{
     IProjectManager* pm = ServicesProvider::getInstance()->getService<IProjectManager>();
 
     auto c = new Curve();
@@ -82,14 +85,4 @@ void projectmanagertest(){
     pm->getProject()->getGraphOpts()->getYAxes()->push_back(new Axis(0.0,2.0,std::string("xx"),false,false));
     pm->getProject()->getGraphOpts()->getYAxes()->push_back(new Axis(0.0,2.0,std::string("yy"),false,false));
     pm->getProject()->getGraphOpts()->getYAxes()->push_back(new Axis(0.0,2.0,std::string("zz"),false,false));
-    //pm->saveProject(std::string("/home/pimpek/test.ogx"));
-
-    //pm->loadProject(std::string("/home/pimpek/test.ogx"));
-    // pm->saveProject();
-
-    // pm->loadProject(std::string("/home/pimpek/test.ogx"));
-    // pm->saveProject();
-
-    // pm->loadProject(std::string("/home/pimpek/test.ogx"));
-    // pm->saveProject();
 }

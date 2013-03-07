@@ -134,30 +134,38 @@ void CurvesManager::listSelectionChanged(int id)
 
 void CurvesManager::moveCurveUp()
 {
+    int id = this->getSelectionId();
+
     std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
-    std::swap(crvs->at(this->getSelectionId()),crvs->at(this->getSelectionId()-1));
-    this->ui->curvesList->setCurrentRow(this->getSelectionId()-1);
+    std::swap(crvs->at(id),crvs->at(--id));
+
     this->refreshCurves();
+    this->ui->curvesList->setCurrentRow(id);
+
 }
 
 void CurvesManager::moveCurveTop()
 {
-    std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
     int id = this->getSelectionId();
+    std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
     while (id != 0)
     {
         std::swap(crvs->at(id),crvs->at(--id));
     }
-    this->ui->curvesList->setCurrentRow(id);
     this->refreshCurves();
+    this->ui->curvesList->setCurrentRow(id);
+
 }
 
 void CurvesManager::moveCurveDown()
 {
+    int id = this->getSelectionId();
+
     std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
-    std::swap(crvs->at(this->getSelectionId()),crvs->at(this->getSelectionId()+1));
-    this->ui->curvesList->setCurrentRow(this->getSelectionId()+1);
+    std::swap(crvs->at(id),crvs->at(++id));
+
     this->refreshCurves();
+    this->ui->curvesList->setCurrentRow(id);
 }
 
 
