@@ -25,6 +25,6 @@
 
 #include <iostream>
 
-std::string ogGetVersion() {return std::string("0.1.0.0");}
+std::string ogGetVersion() {return std::string("0.3.0.0-dev");}
 
 #endif // VERSION_H

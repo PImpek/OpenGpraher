@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2013, Bartosz Foder, (bartosz@foder.pl)
+/* Copyright (c) 2013, Bartosz Foder, (bartosz@foder.pl)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -20,58 +20,40 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef CURVESMANAGER_H
-#define CURVESMANAGER_H
+#ifndef ADDCURVEDIALOG_H
+#define ADDCURVEDIALOG_H
 
-#include <QDockWidget>
+#include <QDialog>
+#include <QDebug>
+#include <QFileDialog>
+#include <QTextStream>
+#include <QDateTime>
 
-#include "Interfaces/iprojectmanager.h"
-#include "Interfaces/icurvesmanager.h"
-#include "Interfaces/icurveproperties.h"
-
-#include "servicesprovider.h"
-#include "Data/project.h"
+#include <vector>
+#include <cmath>
+#include <tuple>
 #include "Data/curve.h"
-#include "Gui/addcurvedialog.h"
-
 
 namespace Ui {
-class CurvesManager;
+class AddCurveDialog;
 }
 
-class CurvesManager : public QDockWidget, public ICurvesManager
+class AddCurveDialog : public QDialog
 {
     Q_OBJECT
-    Q_INTERFACES(ICurvesManager)
     
 public:
-    explicit CurvesManager(QWidget *parent = 0);
-    ~CurvesManager();
-
-    std::string getName();
-    void refreshCurves();
-
-    int getSelectionId();
-
-signals:
-    void selectionChanged(int id);
-
-public slots:
-    void refresh();
+    explicit AddCurveDialog(QWidget *parent = 0);
+    ~AddCurveDialog();
+    Curve *getCurve();
 
 private slots:
-    void listSelectionChanged(int id);
-    void moveCurveUp();
-    void moveCurveTop();
-    void moveCurveDown();
-    void removeCurve();
-    void addCurve();
-
+    void openFile();
+    void loadFile();
 private:
-    Ui::CurvesManager *ui;
+    Ui::AddCurveDialog *ui;
 
-
-
+    std::vector<double> *parseLine(QString line);
 };
 
-#endif // CURVESMANAGER_H
+#endif // ADDCURVEDIALOG_H

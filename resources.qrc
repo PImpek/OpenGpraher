@@ -11,5 +11,6 @@
         <file>Resources/go-up.png</file>
         <file>Resources/list-add.png</file>
         <file>Resources/list-remove.png</file>
+        <file>Resources/text-csv.png</file>
     </qresource>
 </RCC>

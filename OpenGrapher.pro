@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     Gui/curveproperties.cpp \
     Gui/graphercanvas.cpp \
     Gui/graphoptions.cpp \
-    Gui/axesoptions.cpp
+    Gui/axesoptions.cpp \
+    Gui/addcurvedialog.cpp
 
 HEADERS  += Gui/mainwindow.h \
     Interfaces/imainwindow.h \
@@ -39,13 +40,15 @@ HEADERS  += Gui/mainwindow.h \
     Gui/graphercanvas.h \
     Interfaces/igraphoptions.h \
     Gui/graphoptions.h \
-    Gui/axesoptions.h
+    Gui/axesoptions.h \
+    Gui/addcurvedialog.h
 
 FORMS    += Ui/mainwindow.ui \
     Ui/curvesmanager.ui \
     Ui/curveproperties.ui \
     Ui/graphoptions.ui \
-    Ui/axesoptions.ui
+    Ui/axesoptions.ui \
+    Ui/addcurvedialog.ui
 
 RESOURCES += \
     resources.qrc
@@ -61,4 +64,5 @@ OTHER_FILES += \
     Resources/document-save-as.png \
     Resources/document-open.png \
     Resources/document-new.png \
-    Resources/application-exit.png
+    Resources/application-exit.png \
+    Resources/text-csv.png
