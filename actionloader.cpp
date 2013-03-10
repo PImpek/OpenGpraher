@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2013, Bartosz Foder, (bartosz@foder.pl)
+/* Copyright (c) 2013, Bartosz Foder, (bartosz@foder.pl)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -20,59 +20,39 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef IMAINWINDOW_H
-#define IMAINWINDOW_H
+#include "actionloader.h"
+#include "ui_mainwindow.h"
 
-#include <QtPlugin>
-#include <QAction>
+#include "Modules/csv_import/csvimporttool.h"
 
-#include <map>
-#include "iservice.h"
-
-/*!
- * \brief The IMainWindow class
- *interface for MainWindow as service
- */
-class IMainWindow : public IService
+ActionLoader::ActionLoader(QMainWindow *par):
+    parent(par)
 {
-public:
-    /*!
-     * \brief _show
-     *shows main window
-     */
-    virtual void _show() = 0;
-    /*!
-     * \brief updateStatusBar
-     *displays message in status bar
-     * \param msg
-     *message string
-     * \param timeout
-     *optional timeout in [ms]
-     */
-    virtual void updateStatusBar(std::string msg, int timeout = 0) = 0;
-    /*!
-     * \brief getActions
-     *accessor for dictionary of actions (buttons, toggles, actions visible in menu, etc.)
-     * \return
-     *return dictionary of dctions
-     */
+    //intiialize toolboxes
+    auto newToolbar = new QToolBar("New curve toolbar",this->parent);
+    this->initializeNewToolBar(newToolbar);
 
-signals:
+    parent->addToolBar(Qt::TopToolBarArea,newToolbar);
+    ((MainWindow *)parent)->ui->menu_Window->addAction(newToolbar->toggleViewAction());
 
-public slots:
-    /*!
-     * \brief updateWindowTitle
-     *updates windows caption
-     */
-    virtual void updateWindowTitle() = 0;
+    auto editToolbar = new QToolBar("Edit curve toolbar",this->parent);
+    this->initializeEditToolBar(editToolbar);
 
-    virtual bool saveProject() = 0;
-    virtual bool saveProjectAs() = 0;
+    parent->addToolBar(editToolbar);
+    ((MainWindow *)parent)->ui->menu_Window->addAction(editToolbar->toggleViewAction());
+}
 
-    virtual void newProject() = 0;
-    virtual void openProject() = 0;
+void ActionLoader::initializeNewToolBar(QToolBar *tb)
+{
+    this->addTool(new CsvImportTool(this->parent),tb);
+}
 
-};
-Q_DECLARE_INTERFACE(IMainWindow,"og.IMainWindow/1.0")
+void ActionLoader::initializeEditToolBar(QToolBar *tb)
+{
+}
 
-#endif // IMAINWINDOW_H
+void ActionLoader::addTool(ITool *tool,QToolBar *tb)
+{
+    tb->addAction(tool);
+    tool->connect(tool,SIGNAL(triggered()),tool,SLOT(actionHandler()));
+}

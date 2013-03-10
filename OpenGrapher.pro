@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     Gui/graphercanvas.cpp \
     Gui/graphoptions.cpp \
     Gui/axesoptions.cpp \
-    Gui/addcurvedialog.cpp
+    actionloader.cpp \
+    Modules/csv_import/addcurvedialog.cpp \
+    Modules/csv_import/csvimporttool.cpp
 
 HEADERS  += Gui/mainwindow.h \
     Interfaces/imainwindow.h \
@@ -41,14 +43,17 @@ HEADERS  += Gui/mainwindow.h \
     Interfaces/igraphoptions.h \
     Gui/graphoptions.h \
     Gui/axesoptions.h \
-    Gui/addcurvedialog.h
+    actionloader.h \
+    Interfaces/itool.h \
+    Modules/csv_import/addcurvedialog.h \
+    Modules/csv_import/csvimporttool.h
 
 FORMS    += Ui/mainwindow.ui \
     Ui/curvesmanager.ui \
     Ui/curveproperties.ui \
     Ui/graphoptions.ui \
     Ui/axesoptions.ui \
-    Ui/addcurvedialog.ui
+    Modules/csv_import/addcurvedialog.ui
 
 RESOURCES += \
     resources.qrc

@@ -28,8 +28,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    adict(new ActionsDict())
+    ui(new Ui::MainWindow)
 {
     ServicesProvider::getInstance()->registerService<IMainWindow>(this);
 
@@ -38,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->initModules();
     this->initActions();
     this->connectUiElements();
+
+    auto loader = ActionLoader(this);
 
     this->updateWindowTitle();
     this->updateStatusBar(std::string("Welcome in OpenGrapher")+ogGetVersion(),10000);
@@ -58,10 +59,6 @@ void MainWindow::updateStatusBar(std::string msg, int timeout)
     this->ui->statusBar->showMessage(QString(msg.c_str()),timeout);
 }
 
-ActionsDict *MainWindow::getActions()
-{
-    return this->adict;
-}
 
 
 MainWindow::~MainWindow()
@@ -217,7 +214,6 @@ void MainWindow::initActions()
     newFile->setShortcut(QKeySequence("Ctrl+N"));
 
     this->ui->menu_File->addAction(newFile);
-    this->getActions()->insert(ActionDictEntry("newProject", newFile));
     this->connect(newFile,SIGNAL(triggered()),this,SLOT(newProject()));
 
     auto openFile = new QAction(QIcon(":/Resources/document-open.png"),"Open Project ...",this);
@@ -225,7 +221,6 @@ void MainWindow::initActions()
     openFile->setShortcut(QKeySequence("Ctrl+O"));
 
     this->ui->menu_File->addAction(openFile);
-    this->getActions()->insert(ActionDictEntry("openProject", openFile));
     this->connect(openFile,SIGNAL(triggered()),this,SLOT(openProject()));
 
     this->ui->menu_File->addSeparator();
@@ -235,7 +230,6 @@ void MainWindow::initActions()
     saveFile->setShortcut(QKeySequence("Ctrl+S"));
 
     this->ui->menu_File->addAction(saveFile);
-    this->getActions()->insert(ActionDictEntry("saveProject", saveFile));
     this->connect(saveFile,SIGNAL(triggered()),this,SLOT(saveProject()));
 
     auto saveFileAs = new QAction(QIcon(":/Resources/document-save-as.png"),"Save Project as ...",this);
@@ -243,15 +237,12 @@ void MainWindow::initActions()
     saveFileAs->setShortcut(QKeySequence("Ctrl+Shift+S"));
 
     this->ui->menu_File->addAction(saveFileAs);
-    this->getActions()->insert(ActionDictEntry("saveProjectAs", saveFileAs));
     this->connect(saveFileAs,SIGNAL(triggered()),this,SLOT(saveProjectAs()));
 
     this->ui->menu_File->addSeparator();
 
     auto exit = new QAction(QIcon(":/Resources/application-exit.png"),"Close",this);
     this->ui->menu_File->addAction(exit);
-
-    this->getActions()->insert(ActionDictEntry("exit", exit));
     this->connect(exit,SIGNAL(triggered()),this,SLOT(close()));
 
     //edit
@@ -259,16 +250,12 @@ void MainWindow::initActions()
     //window
     auto cm = dynamic_cast<QDockWidget *>(ServicesProvider::getInstance()->getServiceAsQ<ICurvesManager>());
     this->ui->menu_Window->addAction(cm->toggleViewAction());
-    this->getActions()->insert(ActionDictEntry("CurvesManager", cm->toggleViewAction()));
 
     auto cp = dynamic_cast<QDockWidget *>(ServicesProvider::getInstance()->getServiceAsQ<ICurveProperties>());
     this->ui->menu_Window->addAction(cp->toggleViewAction());
 
-    this->getActions()->insert(ActionDictEntry("CurveProperties", cp->toggleViewAction()));
-
     auto go = dynamic_cast<QDockWidget *>(ServicesProvider::getInstance()->getServiceAsQ<IGraphOptions>());
     this->ui->menu_Window->addAction(go->toggleViewAction());
-    this->getActions()->insert(ActionDictEntry("GraphOptions", go->toggleViewAction()));
 
 
     //about

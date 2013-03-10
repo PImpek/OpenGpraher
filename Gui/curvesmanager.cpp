@@ -33,7 +33,6 @@ CurvesManager::CurvesManager(QWidget *parent) :
 
     this->connect(this->ui->curvesList,SIGNAL(currentRowChanged(int)),this,SLOT(listSelectionChanged(int)));
     this->connect(this->ui->removeCurve,SIGNAL(clicked()),this,SLOT(removeCurve()));
-    this->connect(this->ui->addCurve,SIGNAL(clicked()),this,SLOT(addCurve()));
 
     this->connect(this->ui->moveUp,SIGNAL(clicked()),this,SLOT(moveCurveUp()));
     this->connect(this->ui->moveTop,SIGNAL(clicked()),this,SLOT(moveCurveTop()));
@@ -96,6 +95,11 @@ void CurvesManager::refreshCurves()
 int CurvesManager::getSelectionId()
 {
     return this->ui->curvesList->currentRow();
+}
+
+void CurvesManager::setSelectionId(int val)
+{
+    this->ui->curvesList->setCurrentRow(val);
 }
 
 
@@ -176,24 +180,6 @@ void CurvesManager::removeCurve()
     std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
     crvs->erase(crvs->begin() + this->getSelectionId());
     this->refreshCurves();
-}
-
-void CurvesManager::addCurve()
-{
-    auto dial = new AddCurveDialog(this);
-    dial->setModal(true);
-    dial->exec();
-
-    auto curve = dial->getCurve();
-    if (dial->result() == QDialog::Accepted && curve != nullptr)
-    {
-       std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
-       crvs->push_back(curve);
-       ServicesProvider::getInstance()->getService<IProjectManager>()->projectSetUnSaved();
-
-    }
-
-    this->ui->curvesList->setCurrentRow(this->ui->curvesList->count()-1);
 }
 
 void CurvesManager::refresh()

@@ -45,6 +45,13 @@ public:
      *index of selected curve or -1 when no curve is selected
      */
     virtual int getSelectionId() = 0;
+    /*!
+     * \brief setSelectionId
+     *sets current index on list
+     * \param val
+     *val - row
+     */
+    virtual void setSelectionId(int val) = 0;
 
 signals:
     /*!

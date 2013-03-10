@@ -35,6 +35,7 @@
 #include "Gui/curvesmanager.h"
 #include "Gui/curveproperties.h"
 #include "Gui/graphoptions.h"
+#include "actionloader.h"
 
 namespace Ui {
 class MainWindow;
@@ -44,7 +45,9 @@ class MainWindow : public QMainWindow, public IMainWindow
 {
     Q_OBJECT
     Q_INTERFACES(IMainWindow)
-    
+
+    friend class ActionLoader;
+
 public:
     explicit MainWindow(QWidget *parent = 0);
 
@@ -52,7 +55,6 @@ public:
     void _show();
 
     void updateStatusBar(std::string msg, int timeout = 0);
-    ActionsDict *getActions();
 
     ~MainWindow();
 
@@ -69,7 +71,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    ActionsDict *adict;
 
     void initModules();
     void initActions();

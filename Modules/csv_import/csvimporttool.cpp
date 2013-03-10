@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2013, Bartosz Foder, (bartosz@foder.pl)
+/* Copyright (c) 2013, Bartosz Foder, (bartosz@foder.pl)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -20,59 +20,27 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef IMAINWINDOW_H
-#define IMAINWINDOW_H
+#include "csvimporttool.h"
 
-#include <QtPlugin>
-#include <QAction>
-
-#include <map>
-#include "iservice.h"
-
-/*!
- * \brief The IMainWindow class
- *interface for MainWindow as service
- */
-class IMainWindow : public IService
+CsvImportTool::CsvImportTool(QObject *parent) :
+    ITool(parent)
 {
-public:
-    /*!
-     * \brief _show
-     *shows main window
-     */
-    virtual void _show() = 0;
-    /*!
-     * \brief updateStatusBar
-     *displays message in status bar
-     * \param msg
-     *message string
-     * \param timeout
-     *optional timeout in [ms]
-     */
-    virtual void updateStatusBar(std::string msg, int timeout = 0) = 0;
-    /*!
-     * \brief getActions
-     *accessor for dictionary of actions (buttons, toggles, actions visible in menu, etc.)
-     * \return
-     *return dictionary of dctions
-     */
+    this->setIcon(QIcon(":/Resources/text-csv.png"));
+    this->setToolTip("Import curve from CVS file...");
+}
 
-signals:
+void CsvImportTool::actionHandler()
+{
+    auto dial = new AddCurveDialog(dynamic_cast<QWidget *>(this->parent()));
+    dial->setModal(true);
+    dial->exec();
 
-public slots:
-    /*!
-     * \brief updateWindowTitle
-     *updates windows caption
-     */
-    virtual void updateWindowTitle() = 0;
-
-    virtual bool saveProject() = 0;
-    virtual bool saveProjectAs() = 0;
-
-    virtual void newProject() = 0;
-    virtual void openProject() = 0;
-
-};
-Q_DECLARE_INTERFACE(IMainWindow,"og.IMainWindow/1.0")
-
-#endif // IMAINWINDOW_H
+    auto curve = dial->getCurve();
+    if (dial->result() == QDialog::Accepted && curve != nullptr)
+    {
+       std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
+       crvs->push_back(curve);
+       ServicesProvider::getInstance()->getService<IProjectManager>()->projectSetUnSaved();
+       ServicesProvider::getInstance()->getService<ICurvesManager>()->setSelectionId(crvs->size()-1);
+    }
+}

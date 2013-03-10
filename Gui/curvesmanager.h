@@ -32,7 +32,6 @@
 #include "servicesprovider.h"
 #include "Data/project.h"
 #include "Data/curve.h"
-#include "Gui/addcurvedialog.h"
 
 
 namespace Ui {
@@ -52,6 +51,7 @@ public:
     void refreshCurves();
 
     int getSelectionId();
+    void setSelectionId(int val);
 
 signals:
     void selectionChanged(int id);
@@ -65,7 +65,6 @@ private slots:
     void moveCurveTop();
     void moveCurveDown();
     void removeCurve();
-    void addCurve();
 
 private:
     Ui::CurvesManager *ui;
