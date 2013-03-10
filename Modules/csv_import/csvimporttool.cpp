@@ -40,7 +40,11 @@ void CsvImportTool::actionHandler()
     {
        std::vector<Curve*> * crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
        crvs->push_back(curve);
+
        ServicesProvider::getInstance()->getService<IProjectManager>()->projectSetUnSaved();
        ServicesProvider::getInstance()->getService<ICurvesManager>()->setSelectionId(crvs->size()-1);
+       ServicesProvider::getInstance()->getService<IMainWindow>()->updateStatusBar("Curve was succesfully imported");
+    } else {
+        ServicesProvider::getInstance()->getService<IMainWindow>()->updateStatusBar("Curve was not imported");
     }
 }

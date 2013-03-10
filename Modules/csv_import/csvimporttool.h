@@ -32,6 +32,8 @@
 #include "Interfaces/itool.h"
 #include "Interfaces/icurvesmanager.h"
 #include "Interfaces/iprojectmanager.h"
+#include "Interfaces/imainwindow.h"
+
 #include "Modules/csv_import/addcurvedialog.h"
 
 class CsvImportTool : public ITool
