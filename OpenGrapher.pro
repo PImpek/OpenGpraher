@@ -22,7 +22,10 @@ SOURCES += main.cpp\
     Gui/axesoptions.cpp \
     actionloader.cpp \
     Modules/csv_import/addcurvedialog.cpp \
-    Modules/csv_import/csvimporttool.cpp
+    Modules/csv_import/csvimporttool.cpp \
+    Gui/GraphiscItems/scaleitem.cpp \
+    Gui/GraphiscItems/grapheritem.cpp \
+    Gui/GraphiscItems/titleitem.cpp
 
 HEADERS  += Gui/mainwindow.h \
     Interfaces/imainwindow.h \
@@ -46,7 +49,10 @@ HEADERS  += Gui/mainwindow.h \
     actionloader.h \
     Interfaces/itool.h \
     Modules/csv_import/addcurvedialog.h \
-    Modules/csv_import/csvimporttool.h
+    Modules/csv_import/csvimporttool.h \
+    Gui/GraphiscItems/scaleitem.h \
+    Gui/GraphiscItems/grapheritem.h \
+    Gui/GraphiscItems/titleitem.h
 
 FORMS    += Ui/mainwindow.ui \
     Ui/curvesmanager.ui \

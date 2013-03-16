@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2013, Bartosz Foder, (bartosz@foder.pl)
+/* Copyright (c) 2013, Bartosz Foder, (bartosz@foder.pl)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -20,45 +20,32 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef PLOTWIDGET_H
-#define PLOTWIDGET_H
+#ifndef SCALEITEM_H
+#define SCALEITEM_H
 
-#include <QtDebug>
-#include <QWidget>
-#include <QBoxLayout>
-#include <QResizeEvent>
-#include <QGraphicsView>
-#include <QGraphicsRectItem>
-
-#include <iostream>
+#include <QGraphicsItem>
+#include <QPainter>
 #include <tuple>
 
-#include "Interfaces/igraphercanvas.h"
-#include "Interfaces/iprojectmanager.h"
-
-#include "Data/project.h"
 #include "Data/graphopts.h"
 
-#include "Gui/GraphiscItems/grapheritem.h"
-#include "Gui/GraphiscItems/scaleitem.h"
-#include "Gui/GraphiscItems/titleitem.h"
-#include "servicesprovider.h"
-
-class GrapherCanvas : public QWidget, public IGrapherCanvas
+class ScaleItem : public QGraphicsItem
 {
-    Q_OBJECT
-    Q_INTERFACES(IGrapherCanvas)
+
 public:
-    explicit GrapherCanvas(QWidget *parent = 0);
-    std::string getName();
-    void resizeEvent(QResizeEvent *re);
-    
+    ScaleItem(int x, int y, int wid, int hei, Axis *ax, QGraphicsItem *parent = 0);
+
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 signals:
     
 public slots:
-    void redraw();
+
 private:
-    QGraphicsView* canvas;
+    Axis * axis;
+    int mlenght,slenght;
+    Qt::Orientation orient;
 };
 
-#endif // PLOTWIDGET_H
+#endif // SCALEITEM_H

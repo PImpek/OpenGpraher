@@ -91,6 +91,7 @@ void AxesOptions::addAxis()
     this->axes->push_back(new Axis(0.0,1.0,std::string("unnamed"),false,false));
     this->refreshList();
     this->ui->listWidget->setCurrentRow(axes->size()-1);
+    ServicesProvider::getInstance()->getService<IProjectManager>()->projectSetUnSaved();
 }
 
 void AxesOptions::removeAxis()

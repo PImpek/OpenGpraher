@@ -37,6 +37,7 @@ public:
 signals:
 
 public slots:
+    virtual void redraw() = 0;
 
 };
 Q_DECLARE_INTERFACE(IGrapherCanvas,"og.IGrapherCanvas/1.0")
