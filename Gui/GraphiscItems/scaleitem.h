@@ -25,9 +25,17 @@
 
 #include <QGraphicsItem>
 #include <QPainter>
-#include <tuple>
 
+#include <vector>
+#include <tuple>
+#include <cmath>
+
+#include "servicesprovider.h"
+#include "Interfaces/iprojectmanager.h"
+
+#include "Data/project.h"
 #include "Data/graphopts.h"
+#include "Data/curve.h"
 
 class ScaleItem : public QGraphicsItem
 {
@@ -46,6 +54,10 @@ private:
     Axis * axis;
     int mlenght,slenght;
     Qt::Orientation orient;
+
+    void paintHorizontal(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paintVertical(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 };
 
 #endif // SCALEITEM_H

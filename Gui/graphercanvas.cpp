@@ -34,6 +34,7 @@ GrapherCanvas::GrapherCanvas(QWidget *parent) :
 
     auto scene = new QGraphicsScene(this->canvas);
     scene->setSceneRect(0,0,this->width(),this->height());
+    this->canvas->setBackgroundBrush(QBrush(Qt::white));
     this->canvas->setScene(scene);
 
     this->setLayout(new QGridLayout);

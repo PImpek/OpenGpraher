@@ -49,35 +49,103 @@ QRectF ScaleItem::boundingRect() const
 
 void ScaleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    //painter->drawRect(this->boundingRect());
-    //painter->drawEllipse(this->boundingRect());
+    if (this->orient == Qt::Horizontal)
+        this->paintHorizontal(painter, option, widget);
+    else
+        this->paintVertical(painter, option, widget);
+
+}
+
+void ScaleItem::paintHorizontal(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    double min = std::get<0>((*this->axis));
+    double max = std::get<1>((*this->axis));
+    //if this is default scale we need to find maximum and minimum in curves tied with this scalee
+    if (min == 0. && max == 1.)
+    {
+        min = 100000.;
+        max = -100000.;
+        Axes *xa = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getGraphOpts()->getXAxes();
+
+        auto it = std::find(xa->begin(),xa->end(),this->axis);
+        int id = std::distance(xa->begin(),it);
+        if(id < xa->size())
+        {
+            std::vector<Curve *> *crvs = ServicesProvider::getInstance()->getService<IProjectManager>()->getProject()->getCurves();
+            std::for_each(crvs->begin(),crvs->end(),[&min,&max,&id](Curve *c){
+                if(c->getXAxisId() == id)
+                {
+                    std::for_each(c->getData()->begin(),c->getData()->end(),[&min,&max](std::tuple< double , double, std::vector< double > > row){
+                        double x = std::get<1>(row);
+                        if (x < min)
+                            min = x;
+                        else if (x > max)
+                            max = x;
+                    });
+                }
+            });
+        }
+        if (min > max)
+        {
+            min = 0.;
+            max = 1.;
+        }
+    }
+    QString label = QString(std::get<2>((*this->axis)).c_str());
 
     bool side = std::get<4>((*this->axis));
-    const char *label = std::get<2>((*this->axis)).c_str();
+    bool logarithmic = std::get<3>((*this->axis));
 
-    if (this->orient == Qt::Horizontal) //x
+    painter->drawLine(QLineF(1,(side)?this->slenght-1:1,this->mlenght-1,(side)?this->slenght-1:1));
+
+    if(logarithmic)
     {
-        painter->drawLine(QLineF(1,(side)?this->slenght-1:1,this->mlenght-1,(side)?this->slenght-1:1));
-        for(int i = 0 ; i < 11 ; i++)
+        if (min <=0. || max <=0.)
         {
-            painter->drawLine(QLineF((this->mlenght/10)*i,
-                                     this->slenght/((i%2==0)?2.:(!side)?4.:1.33),
-                                     (this->mlenght/10)*i,
-                                     (side)?this->slenght-1:1));
+            painter->drawText(this->boundingRect(),Qt::AlignCenter,"!!! logharithmic scale presents only positive values !!!\n"+QString(label));
+            return;
         }
-        painter->drawText(this->boundingRect(),Qt::AlignCenter,label);
+        double lmin = log10(min);
+        double lmax = log10(max);
+        int dl = (int)lmax - (int)lmin + 1;
 
-    } else { //y
-        painter->drawLine(QLineF((!side)?this->slenght-1:1,1,(!side)?this->slenght-1:1,this->mlenght));
-        for(int i = 0 ; i < 11 ; i++)
+        for(int i = 0 ; i <= dl ; i++)
         {
-            painter->drawLine(QLineF(this->slenght/((i%2==0)?2.:(side)?4.:1.33),
-                                     (this->mlenght/10)*i,
-                                     (!side)?this->slenght-1:1,
-                                     (this->mlenght/10)*i));
+            painter->drawLine(QLineF((this->mlenght/dl)*i,
+                                     this->slenght/((side)?1.5:3),
+                                     (this->mlenght/dl)*i,
+                                     (side)?this->slenght-1:1));
+
+            auto txt = QString::number(pow(10,((int)lmin+i)));
+            int tw = painter->fontMetrics().width(txt);
+            int th = painter->fontMetrics().height();
+            painter->drawText(QPointF((this->mlenght/dl)*i - tw/2,(side)?1+th:this->slenght-1),txt);
+
         }
-        painter->translate(0,this->mlenght);
-        painter->rotate(270);
-        painter->drawText(QRectF(1,1,(orient != Qt::Vertical)?slenght-1:mlenght-1, (orient != Qt::Horizontal)?slenght-1:mlenght-1),Qt::AlignCenter,label);
+    } else {
+        for(int i = 0 ; i <= 10 ; i++)
+        {
+            painter->drawLine(QLineF((this->mlenght/10.)*i,
+                                     this->slenght/((i%2==0)?2.:(!side)?4.:1.33),
+                                     (this->mlenght/10.)*i,
+                                     (side)?this->slenght-1:1));
+            if (i%2 == 0){
+                auto txt = QString::number(min + i*(max - min)/10);
+                int tw = painter->fontMetrics().width(txt);
+                int th = painter->fontMetrics().height();
+                painter->drawText(QPointF((this->mlenght/10.)*i - tw/2,
+                                          (side)?1+th:this->slenght-1),
+                                  txt);
+            }
+        }
     }
+    int tw = painter->fontMetrics().width(label);
+    painter->drawText(QPointF(this->mlenght/2 - tw/2,this->slenght/2),label);
+}
+
+void ScaleItem::paintVertical(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->translate(this->slenght,0.);
+    painter->rotate(90);
+    this->paintHorizontal(painter,option,widget);
 }
